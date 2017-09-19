@@ -8,7 +8,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 public class InMemorySecurityConfig {
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder builder) throws Exception {
-		builder.inMemoryAuthentication().withUser("normandes").password("123").roles("USER").and().withUser("alexandre")
-				.password("123").roles("USER").and().withUser("thiago").password("123").roles("USER");
+		builder.inMemoryAuthentication().withUser("alessandro").password("123").roles("USER");
 	}
 }
