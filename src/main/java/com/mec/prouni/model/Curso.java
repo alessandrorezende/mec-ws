@@ -1,6 +1,6 @@
 package com.mec.prouni.model;
 
-
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,10 +13,17 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-@NamedQueries(value = { @NamedQuery(name = "Curso.findAll", query ="SELECT c FROM Curso c") })
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+@NamedQueries(value = { @NamedQuery(name = "Curso.findAll", query = "SELECT c FROM Curso c") })
 @Table(name = "curso")
 @Entity
-public class Curso extends AbstractBean {
+@JsonSerialize
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Curso implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(generator = "increment")
@@ -24,10 +31,15 @@ public class Curso extends AbstractBean {
 	private Long id;
 	private String nome;
 	private String duracao;
+	private String turno;
+	private int vagas = 0;
 	@JoinColumn(name = "instituicao", referencedColumnName = "id", nullable = false)
 	@ManyToOne(optional = false)
 	private Instituicao instituicao;
 
+	public Curso() {
+		instituicao = new Instituicao();
+	}
 
 	public Long getId() {
 		return id;
@@ -59,5 +71,21 @@ public class Curso extends AbstractBean {
 
 	public void setInstituicao(Instituicao instituicao) {
 		this.instituicao = instituicao;
+	}
+
+	public String getTurno() {
+		return turno;
+	}
+
+	public void setTurno(String turno) {
+		this.turno = turno;
+	}
+
+	public int getVagas() {
+		return vagas;
+	}
+
+	public void setVagas(int vagas) {
+		this.vagas = vagas;
 	}
 }

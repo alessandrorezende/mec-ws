@@ -5,6 +5,10 @@ import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -12,19 +16,26 @@ import org.hibernate.annotations.GenericGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-@Table(name = "instituicao")
+@NamedQueries(value = { @NamedQuery(name = "Aluno.findAll", query = "SELECT a FROM Aluno a") })
+@Table(name = "aluno")
 @Entity
 @JsonSerialize
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Instituicao implements Serializable {
+public class Aluno implements Serializable {
 
-	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	private Long id;
 	private String nome;
-	private String hashId;
+	private String idade;
+	@JoinColumn(name = "curso", referencedColumnName = "id", nullable = false)
+	@ManyToOne(optional = false)
+	private Curso curso;
+
+	public Aluno() {
+		curso = new Curso();
+	}
 
 	public Long getId() {
 		return id;
@@ -42,12 +53,20 @@ public class Instituicao implements Serializable {
 		this.nome = nome;
 	}
 
-	public String getHashId() {
-		return hashId;
+	public String getIdade() {
+		return idade;
 	}
 
-	public void setHashId(String hashId) {
-		this.hashId = hashId;
+	public void setIdade(String idade) {
+		this.idade = idade;
+	}
+
+	public Curso getCurso() {
+		return curso;
+	}
+
+	public void setCurso(Curso curso) {
+		this.curso = curso;
 	}
 
 }
